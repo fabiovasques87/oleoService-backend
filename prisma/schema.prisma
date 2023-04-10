@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cliente {
+  codcliente              Int     @id @default(autoincrement())
+  nome_cliente            String  @db.VarChar(40)
+  sobrenome_cliente       String  @db.VarChar(45)
+  telefone1_cliente       String  @db.VarChar(15)
+  telefone2_cliente       String? @db.VarChar(15)
+  cpf_cliente             String  @unique(map: "cpf_cliente") @db.VarChar(20)
+  rg_cliente              String? @db.VarChar(15)
+  rua_cliente             String? @db.VarChar(50)
+  numero_rua_cliente      BigInt?
+  cidade_cliente          String? @db.VarChar(50)
+  uf_cliente              String? @db.Char(2)
+  data_nascimento_cliente String? @db.VarChar(45)
+  sexo_cliente            String? @db.VarChar(45)
+  bairro_cliente          String? @db.VarChar(45)
+  cep_cliente             Int?
+  status_cliente          String? @db.VarChar(30)
+}
+
+model funcao {
+  cod_funcao       Int     @id @default(autoincrement())
+  nome_funcao      String  @db.VarChar(50)
+  descricao_funcao String? @db.VarChar(80)
+}
+
+model servicos {
+  cod_servicos              Int       @default(autoincrement())
+  data_troca                DateTime? @db.Date
+  proxima_troca             DateTime? @db.Date
+  qtd_oleo                  String?   @db.VarChar(20)
+  km                        BigInt?
+  filtro_combustivel        String    @db.VarChar(80)
+  filtro_cabine             String    @db.VarChar(80)
+  status_filtro_oleo        String?   @db.VarChar(8)
+  status_filtro_ar          String?   @db.VarChar(8)
+  status_filtro_cabine      String?   @db.VarChar(8)
+  status_filtro_combustivel String?   @db.VarChar(8)
+  obs_troca                 String?   @db.VarChar(100)
+  filtro_ar                 String    @db.VarChar(30)
+  cliente_codcliente        Int
+  tipo_oleo                 String?   @db.VarChar(80)
+  filtro_oleo               String    @db.VarChar(80)
+  veiculo_cod_veiculo       Int
+  usuarios_id               Int
+  unidade_id_unidade        Int
+
+  @@id([cod_servicos, cliente_codcliente, usuarios_id, unidade_id_unidade])
+  @@index([cliente_codcliente], map: "fk_servicos_cliente1_idx")
+  @@index([unidade_id_unidade], map: "fk_servicos_unidade1_idx")
+  @@index([usuarios_id], map: "fk_servicos_usuarios1_idx")
+  @@index([veiculo_cod_veiculo], map: "fk_servicos_veiculo1_idx")
+}
+
+model unidade {
+  id_unidade        Int     @id @unique(map: "id_unidade_UNIQUE")
+  nome_unidade      String  @unique(map: "nome_unidade_UNIQUE") @db.VarChar(60)
+  descricao_unidade String? @db.VarChar(80)
+  rua_unidade       String? @db.VarChar(45)
+  bairro_unidade    String? @db.VarChar(45)
+  cidade_unidade    String? @db.VarChar(60)
+  uf_unidade        String? @db.Char(2)
+  cep_unidade       String  @db.VarChar(20)
+  numero_unidade    String? @db.VarChar(45)
+  telefone_unidade  String? @db.VarChar(45)
+}
+
+model usuarios {
+  id                Int    @default(autoincrement())
+  nome              String @db.VarChar(50)
+  email             String @db.VarChar(45)
+  senha             String @db.VarChar(32)
+  status_usuario    Int
+  funcao_cod_funcao Int
+
+  @@id([id, funcao_cod_funcao])
+  @@index([funcao_cod_funcao], map: "fk_usuarios_funcao1_idx")
+}
+
+model veiculo {
+  cod_veiculo            Int     @id @default(autoincrement())
+  placa_veiculo          String? @unique(map: "placa_veiculo") @db.VarChar(15)
+  tipo_veiculo           String? @db.VarChar(25)
+  cor_veiculo            String? @db.VarChar(20)
+  modelo_veiculo         String? @db.VarChar(45)
+  fabricante_veiculo     String? @db.VarChar(50)
+  ano_fabricacao_veiculo String? @db.VarChar(20)
+  km_veiculo             Int?
+  obs_veiculo            String? @db.VarChar(45)
+  status_veiculo         String? @db.VarChar(30)
+  cliente_codcliente     Int
+
+  @@index([cliente_codcliente], map: "fk_veiculo_cliente1_idx")
+}
