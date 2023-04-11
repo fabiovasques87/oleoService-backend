@@ -4,7 +4,7 @@ import {Router} from 'express';
 import * as UserController from '../controllers/userController';
 import * as FuncaoController from '../controllers/funcaoController';
 import * as UnidadeController from '../controllers/unidadeController';
-
+import * as VeiculoController from '../controllers/veiculoController';
 
 const router = Router();
 
@@ -26,6 +26,9 @@ router.post('/unidade', UnidadeController.create);
 
 router.post('/funcao', FuncaoController.create);
 //Cria Funcao 
+
+router.post('/veiculo', VeiculoController.create);
+//Cria veiculos 
 
 // router.put('/user/:id', UserController.update);
 
