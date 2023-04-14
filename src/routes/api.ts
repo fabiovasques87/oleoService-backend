@@ -25,8 +25,11 @@ router.post('/veiculo', VeiculoController.create);
 //rotas para pegar todos os veiculos
 
 
-router.get('/searchVeiculo',VeiculoController.one );
+router.get('/searchVeiculo',VeiculoController.all );
 // pega o veiculos pela placa
+
+router.put('/updateVeiculo/:cod_veiculo', VeiculoController.updateVeiculo);
+//alterar o veiculo
 
 
 router.post('/unidade', UnidadeController.create);

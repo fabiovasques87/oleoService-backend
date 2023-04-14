@@ -1,6 +1,10 @@
 
 import { Request, Response } from "express";
 import { VeiculoService } from "../services/VeiculoService";
+import { PrismaClient } from "@prisma/client";
+
+
+const prisma = new PrismaClient();
 
 
 export const all = async (req: Request, res: Response) =>{
@@ -44,4 +48,81 @@ export const create = async (req: Request, res: Response) => {
         }else {
             res.json({error: "placa já está cadastrada"});            
         }
+    }
+
+    export const updateVeiculo = async (req: Request, res: Response) => {
+        const {cod_veiculo} = req.params;
+        console.log(cod_veiculo);
+        //const clientId = req.params.cpf_cliente;
+       
+    
+        const {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo, ano_fabricacao_veiculo,
+             obs_veiculo, status_veiculo, km_veiculo, cliente_codcliente
+            } = req.body;
+
+
+            const encontRegistro = await prisma.veiculo.findUnique({
+                where: {
+                    cod_veiculo : parseInt(cod_veiculo)
+                }
+            })
+
+            if(encontRegistro){
+
+                res.json({encontRegistro}) //mostra os registros
+
+        //se encontrou o registro, realiza a conversao ...
+      
+        const km = parseInt(km_veiculo);
+        const cod = parseInt(cliente_codcliente); 
+
+
+        const veiculo = await prisma.veiculo.update({
+            where:{
+                cod_veiculo:parseInt(cod_veiculo)
+            },
+            data: {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo, ano_fabricacao_veiculo,
+                 obs_veiculo, status_veiculo, km_veiculo:km, cliente_codcliente:cod}
+              
+            
+        })
+        //res.json({veiculo}) 
+        }       
+
+      else {
+             
+        res.json({error: "Registro não encontrado"});
+
+        
+
+        }
+
+            //res.json({encontRegistro});
+
+        //     if(encontRegistro){
+
+        //          res.json({encontRegistro});
+    
+        //            //se encontrou o registro, realiza a conversao ...
+        //             const k = parseInt(km_veiculo);
+        //             const cod = parseInt(cliente_codcliente);
+
+
+        //             const veiculo = await prisma.veiculo.update({
+        //                 where:{
+        //                     cod_veiculo:parseInt(cod_veiculo)
+        //                 },
+        //                 data: {
+        //                     placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo,
+        //                     ano_fabricacao_veiculo, km_veiculo:k, obs_veiculo, status_veiculo, cliente_codcliente:cod
+        //                 }
+            
+                        
+        //             })
+        //             res.json({veiculo})
+        //     }       
+    
+        //   else {
+        //         res.json({error: "Registro não encontrado"});              
+        //  }
     }

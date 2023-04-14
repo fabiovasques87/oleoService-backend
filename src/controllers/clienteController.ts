@@ -72,23 +72,31 @@ export const create = async (req: Request, res: Response) => {
             rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
             sexo_cliente, bairro_cliente, cep_cliente, status_cliente
             } = req.body;
+            
 
             const encontRegistro = await prisma.cliente.findUnique({
                 where: {
-                    codcliente : parseInt(codcliente)
+                    codcliente : parseInt(codcliente)  
                 }
             })
 
+            // res.json({encontRegistro});
+
             if(encontRegistro){
-    
+
+                    //se encontrou o registro, realiza a conversao ...
+                    const cepCliente = parseInt(cep_cliente);
+                    const numero = parseInt(numero_rua_cliente);  
+
+
                     const cliente = await prisma.cliente.update({
                         where:{
                             codcliente:parseInt(codcliente)
                         },
                         data: {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,cpf_cliente,
-                            rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
-                            sexo_cliente, bairro_cliente, cep_cliente, status_cliente}
-            
+                            rg_cliente, rua_cliente, numero_rua_cliente:numero, cidade_cliente, uf_cliente, data_nascimento_cliente,
+                            sexo_cliente, bairro_cliente, cep_cliente:cepCliente, status_cliente}
+                          
                         
                     })
                     res.json({cliente})
