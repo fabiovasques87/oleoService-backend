@@ -45,6 +45,10 @@ router.get('/clientes',ClienteController.one );
  router.put('/updatecliente/:codcliente', ClienteController.updateClient);
 //alterar cliente pelo cpf
 
+router.delete('/deleteCliente/:codcliente', ClienteController.deleteCliente);
+//alterar cliente pelo cpf
+
+
 // router.get('/clientes',ClienteController.all );
 //rotas para pegar ctodos os clientes
 

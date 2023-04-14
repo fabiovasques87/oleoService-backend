@@ -3,6 +3,7 @@
 import { Request, Response } from "express";
 import { ClienteService } from "../services/ClienteService";
 import { PrismaClient } from "@prisma/client";
+import { join } from "path";
 
 
 const prisma = new PrismaClient();
@@ -15,64 +16,7 @@ const prisma = new PrismaClient();
 
 //atualizar os dados
 
-export const updateClient = async(req: Request, res: Response)=> {
-    const {codcliente} = req.params;
-    console.log(codcliente);
-    //const clientId = req.params.cpf_cliente;
-   
 
-    const {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,
-        rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
-        sexo_cliente, bairro_cliente, cep_cliente, status_cliente
-        } = req.body;
-
-        const cliente = await prisma.cliente.update({
-            where:{
-                codcliente:parseInt(codcliente)
-            },
-            data: {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,
-                rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
-                sexo_cliente, bairro_cliente, cep_cliente, status_cliente}
-
-            
-        })
-
-
-        if(cliente){
-            res.json(cliente);     
-        }else {
-
-
-            res.json({error: "Cliente nao encontrado"})
-        }
-
-        
-        
-
-    // const client = await prisma.cliente.findUnique({
-    //   where : {
-    //     cpf_cliente 
-    //   }  
-    // })
-    // if(client) {
-    // //     //atualiza
-    // //     // const clientUpdate = await ClienteService.update(    
-    // //     //     nome_cliente, sobrenome_cliente
-    // //     // );
-    // //     // const clientUpdate = await prisma.cliente.update({
-    // //     //     where:{cpf_cliente},
-    // //     //     data: {
-    // //     //         nome_cliente, sobrenome_cliente
-                
-    // //     //     }
-    // //     // })
-    // //     // res.json({client: clientUpdate})
-    // console.log(res.json(client))
-    //     res.json(client)
-    // }else {
-    //     res.json({error: "Cliente não existe"})
-    // }
-}   
 
 export const one = async (req: Request, res: Response) =>{
     const {cpf_cliente} = req.body;
@@ -117,4 +61,76 @@ export const create = async (req: Request, res: Response) => {
 
         
     }
+
+    export const updateClient = async(req: Request, res: Response)=> {
+        const {codcliente} = req.params;
+        console.log(codcliente);
+        //const clientId = req.params.cpf_cliente;
+       
+    
+        const {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,cpf_cliente,
+            rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
+            sexo_cliente, bairro_cliente, cep_cliente, status_cliente
+            } = req.body;
+
+            const encontRegistro = await prisma.cliente.findUnique({
+                where: {
+                    codcliente : parseInt(codcliente)
+                }
+            })
+
+            if(encontRegistro){
+    
+                    const cliente = await prisma.cliente.update({
+                        where:{
+                            codcliente:parseInt(codcliente)
+                        },
+                        data: {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,cpf_cliente,
+                            rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
+                            sexo_cliente, bairro_cliente, cep_cliente, status_cliente}
+            
+                        
+                    })
+                    res.json({cliente})
+            }       
+    
+          else {
+                res.json({error: "Registro não encontrado"});  
+    
+            }
+    
+          
+    }   
+
+    export  const deleteCliente =  async (req: Request, res: Response) => {
+        const {codcliente} = req.params;
+
+        const encontRegistro = await prisma.cliente.findUnique({
+            where: {
+                codcliente : parseInt(codcliente)
+            }
+        })
+
+        if(encontRegistro){
+
+                try{
+                     await prisma.cliente.delete({
+                                where : {
+                                    codcliente : parseInt(codcliente)
+                                }
+                            });
+                            res.json({success: 'excluido com sucesso!'});    
+                            return encontRegistro;
+                            res.status(204).send();   
+                            // res.json("excluido com sucesso!");   
+                            console.log('Excluido com sucesso');  
+                        }catch (error){
+                            console.log(error);
+                            res.status(5000).send(error);
+                        }
+        }else {
+            res.json({error: "registro nao encontrado!"})
+        }
+
+    } 
 
