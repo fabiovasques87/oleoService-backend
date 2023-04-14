@@ -5,15 +5,12 @@ import * as UserController from '../controllers/userController';
 import * as FuncaoController from '../controllers/funcaoController';
 import * as UnidadeController from '../controllers/unidadeController';
 import * as VeiculoController from '../controllers/veiculoController';
+import * as ClienteController from '../controllers/clienteController'
 
 const router = Router();
 
 router.get('/users',UserController.all );
 //rotas para pegar todos os usuários
-
-
-
-// router.get('/funcao',FuncaoController.all );
 
 router.get('/user/:id',UserController.one );
 // pega o usuario pelo id
@@ -21,14 +18,35 @@ router.get('/user/:id',UserController.one );
 router.post('/user', UserController.create);
 //Cria usuário 
 
+router.post('/veiculo', VeiculoController.create);
+//Cria veiculos 
+
+// router.get('/veiculos',VeiculoController.all );
+//rotas para pegar todos os veiculos
+
+
+router.get('/searchVeiculo',VeiculoController.one );
+// pega o veiculos pela placa
+
+
 router.post('/unidade', UnidadeController.create);
 //Cria Unidade
 
 router.post('/funcao', FuncaoController.create);
 //Cria Funcao 
 
-router.post('/veiculo', VeiculoController.create);
-//Cria veiculos 
+router.post('/cliente', ClienteController.create);
+//Cria cliente
+
+router.get('/clientes',ClienteController.one );
+//rotas para pegar cliente pelo cpf
+
+
+ router.put('/updatecliente/:codcliente', ClienteController.updateClient);
+//alterar cliente pelo cpf
+
+// router.get('/clientes',ClienteController.all );
+//rotas para pegar ctodos os clientes
 
 // router.put('/user/:id', UserController.update);
 

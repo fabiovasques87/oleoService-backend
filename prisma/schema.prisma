@@ -16,7 +16,7 @@ model cliente {
   cpf_cliente             String  @unique(map: "cpf_cliente") @db.VarChar(20)
   rg_cliente              String? @db.VarChar(15)
   rua_cliente             String? @db.VarChar(50)
-  numero_rua_cliente      BigInt?
+  numero_rua_cliente      Int?
   cidade_cliente          String? @db.VarChar(50)
   uf_cliente              String? @db.Char(2)
   data_nascimento_cliente String? @db.VarChar(45)
@@ -77,7 +77,7 @@ model usuarios {
   id                Int    @default(autoincrement())
   nome              String @db.VarChar(50)
   email             String @db.VarChar(45)
-  senha             String @db.VarChar(32)
+  senha             String @db.VarChar(64)
   status_usuario    Int
   funcao_cod_funcao Int
 

@@ -28,12 +28,20 @@ export const VeiculoService = {
     create: async (data: createDataProp) => {
         return await prisma.veiculo.create({data});
     },
+    //pega todos os veículos
+    findAll: async () => {
+        //pega todos os users da tabela usuarios...
+        return await prisma.veiculo.findMany({});
+    },
     //valida se a placa já existe...
     findOne: async (placa_veiculo: string) => {
-        return await prisma.veiculo.findFirst({
-            where:{
+
+        
+
+        return await prisma.veiculo.findUnique({
+            where: {
                 placa_veiculo
-            }
+              },
         });
     },
 }

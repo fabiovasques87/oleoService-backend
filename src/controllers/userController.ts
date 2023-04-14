@@ -26,7 +26,7 @@ export const one = async (req: Request, res: Response) =>{
 
 export const create = async (req: Request, res: Response) => {
     const {nome, email, senha,  status_usuario,  funcao_cod_funcao} = req.body;
-    const salt = bcrypt.genSaltSync(10);
+    // const salt = bcrypt.genSaltSync(10);
 
     //se tiver todos esses dados....
 

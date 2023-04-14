@@ -1,9 +1,24 @@
 
 import { Request, Response } from "express";
-import {UserService} from '../services/UserService'
 import { VeiculoService } from "../services/VeiculoService";
 
 
+export const all = async (req: Request, res: Response) =>{
+    //pegar todos os usuarios
+    const veiculo = await VeiculoService.findAll();
+    res.json({veiculo})
+}
+
+export const one = async (req: Request, res: Response) =>{
+    const {placa_veiculo} = req.body;
+    const veiculo = await VeiculoService.findOne((placa_veiculo));
+    //se enconrtrar veiculo
+    if(veiculo){
+        res.json({veiculo});
+    }else {
+        res.json({error: 'Veículo nao cadastrado'});
+    }
+}
 
 export const create = async (req: Request, res: Response) => {
     const {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo,

@@ -1,0 +1,120 @@
+
+
+import { Request, Response } from "express";
+import { ClienteService } from "../services/ClienteService";
+import { PrismaClient } from "@prisma/client";
+
+
+const prisma = new PrismaClient();
+
+// export const all = async (req: Request, res: Response) =>{
+//     //pegar todos os usuarios
+//     const cliente = await ClienteService.findAll();
+//     res.json({cliente})
+// }
+
+//atualizar os dados
+
+export const updateClient = async(req: Request, res: Response)=> {
+    const {codcliente} = req.params;
+    console.log(codcliente);
+    //const clientId = req.params.cpf_cliente;
+   
+
+    const {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,
+        rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
+        sexo_cliente, bairro_cliente, cep_cliente, status_cliente
+        } = req.body;
+
+        const cliente = await prisma.cliente.update({
+            where:{
+                codcliente:parseInt(codcliente)
+            },
+            data: {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente,
+                rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
+                sexo_cliente, bairro_cliente, cep_cliente, status_cliente}
+
+            
+        })
+
+
+        if(cliente){
+            res.json(cliente);     
+        }else {
+
+
+            res.json({error: "Cliente nao encontrado"})
+        }
+
+        
+        
+
+    // const client = await prisma.cliente.findUnique({
+    //   where : {
+    //     cpf_cliente 
+    //   }  
+    // })
+    // if(client) {
+    // //     //atualiza
+    // //     // const clientUpdate = await ClienteService.update(    
+    // //     //     nome_cliente, sobrenome_cliente
+    // //     // );
+    // //     // const clientUpdate = await prisma.cliente.update({
+    // //     //     where:{cpf_cliente},
+    // //     //     data: {
+    // //     //         nome_cliente, sobrenome_cliente
+                
+    // //     //     }
+    // //     // })
+    // //     // res.json({client: clientUpdate})
+    // console.log(res.json(client))
+    //     res.json(client)
+    // }else {
+    //     res.json({error: "Cliente não existe"})
+    // }
+}   
+
+export const one = async (req: Request, res: Response) =>{
+    const {cpf_cliente} = req.body;
+    const cliente = await ClienteService.findOne(cpf_cliente);
+    //se enconrtrar usuario
+    if(cliente){
+        res.json({cliente});
+    }else {
+        res.json({error: 'Cliente não ecnontrado'});
+    }
+}
+
+export const create = async (req: Request, res: Response) => {
+    const {nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente, cpf_cliente,
+        rg_cliente, rua_cliente, numero_rua_cliente, cidade_cliente, uf_cliente, data_nascimento_cliente,
+        sexo_cliente, bairro_cliente, cep_cliente, status_cliente
+        } = req.body;
+
+    //se tiver todos esses dados....
+
+            const cpf = await ClienteService.findOne((cpf_cliente));
+
+            if(!cpf){
+
+            const cliente = await ClienteService.create({
+                nome_cliente, sobrenome_cliente, telefone1_cliente, telefone2_cliente, cpf_cliente,
+                rg_cliente, rua_cliente, numero_rua_cliente:parseInt(numero_rua_cliente), cidade_cliente, uf_cliente, data_nascimento_cliente,
+                sexo_cliente, bairro_cliente, cep_cliente:parseInt(cep_cliente), status_cliente
+
+            });
+            
+            res.status(201).json({cliente});
+            
+            }else{
+                res.json({error: "Cliente já existe"});
+            }
+      
+            // }else {
+            //     res.json({error: 'Dados não preenchidos'});
+            // }
+
+
+        
+    }
+
