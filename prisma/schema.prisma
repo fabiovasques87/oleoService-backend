@@ -37,7 +37,7 @@ model servicos {
   data_troca                DateTime? @db.Date
   proxima_troca             DateTime? @db.Date
   qtd_oleo                  String?   @db.VarChar(20)
-  km                        BigInt?
+  km                        Int
   filtro_combustivel        String    @db.VarChar(80)
   filtro_cabine             String    @db.VarChar(80)
   status_filtro_oleo        String?   @db.VarChar(8)
