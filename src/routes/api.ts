@@ -7,6 +7,7 @@ import * as UnidadeController from '../controllers/unidadeController';
 import * as VeiculoController from '../controllers/veiculoController';
 import * as ClienteController from '../controllers/clienteController';
 import * as ServicoController from '../controllers/ServicoControllers';
+import * as Servicos from '../controllers/consultaServicoPrestado.controller';
 
 const router = Router();
 
@@ -61,6 +62,22 @@ router.get('/searchServicos',ServicoController.all );
 
 router.get('/servico/:cod_servicos',ServicoController.one );
 //rotas para pegar servicos pelo codigo
+
+router.get('/servicoTrocaVencendo/:placa_veiculo',Servicos.servicoPrestadoVeiculo);
+//rotas para pegar os veiculos com seus servicos prestados
+
+router.get('/trocaAVencer',Servicos.trocaAVencer);
+//rotas para pegar somente as trocas que estao faltando 30 dias para o vencimento...
+
+router.get('/trocaCpf/:cpf_cliente',Servicos.trocaporCpf);
+//rotas para pesquisar trocas por cpf...
+
+
+router.get('/trocavencidas',Servicos.trocasVencidas);
+//rotas para pegar somente as trocas que ja venceram...
+
+router.get('/relatData',Servicos.relatTroca);
+//rotas para montar relatorio, filtrando por datas
 
 router.put('/updateServico/:cod_servicos', ServicoController.updateServico);
 //alterar o servico pelo cod

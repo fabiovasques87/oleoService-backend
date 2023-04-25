@@ -24,6 +24,8 @@ model cliente {
   bairro_cliente          String? @db.VarChar(45)
   cep_cliente             Int?
   status_cliente          String? @db.VarChar(30)
+  servicos                servicos[]
+  veiculo                 veiculo[]
 }
 
 model funcao {
@@ -46,15 +48,18 @@ model servicos {
   status_filtro_combustivel String?   @db.VarChar(8)
   obs_troca                 String?   @db.VarChar(100)
   filtro_ar                 String    @db.VarChar(30)
-  cliente_codcliente        Int
+  cliente_codcliente        Int       
   tipo_oleo                 String?   @db.VarChar(80)
   filtro_oleo               String    @db.VarChar(80)
   veiculo_cod_veiculo       Int
   usuarios_id               Int
   unidade_id_unidade        Int
+  veiculo                   veiculo @relation(fields: [veiculo_cod_veiculo], references: [cod_veiculo])
+  cliente                   cliente @relation(fields: [cliente_codcliente], references: [codcliente])
+  unidade                   unidade @relation(fields: [unidade_id_unidade], references: [id_unidade])
 
   @@id([cod_servicos, cliente_codcliente, usuarios_id, unidade_id_unidade])
-  @@index([cliente_codcliente], map: "fk_servicos_cliente1_idx")
+  @@index([cliente_codcliente], map: "fk_servicos_cliente1_idx")  
   @@index([unidade_id_unidade], map: "fk_servicos_unidade1_idx")
   @@index([usuarios_id], map: "fk_servicos_usuarios1_idx")
   @@index([veiculo_cod_veiculo], map: "fk_servicos_veiculo1_idx")
@@ -71,6 +76,8 @@ model unidade {
   cep_unidade       String  @db.VarChar(20)
   numero_unidade    String? @db.VarChar(45)
   telefone_unidade  String? @db.VarChar(45)
+  servicos          servicos[]
+
 }
 
 model usuarios {
@@ -96,7 +103,9 @@ model veiculo {
   km_veiculo             Int?
   obs_veiculo            String? @db.VarChar(45)
   status_veiculo         String? @db.VarChar(30)
-  cliente_codcliente     Int
+  servicos               servicos[]
+  clientecodCliente      Int
+  cliente                cliente @relation(fields: [clientecodCliente], references: [codcliente])
 
-  @@index([cliente_codcliente], map: "fk_veiculo_cliente1_idx")
+
 }

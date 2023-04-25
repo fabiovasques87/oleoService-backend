@@ -15,7 +15,8 @@ type createDataProp = {
     km_veiculo: number;
     obs_veiculo: string | undefined;
     status_veiculo: string;
-    cliente_codcliente: number;
+    clientecodCliente: number;
+
 }
 
 

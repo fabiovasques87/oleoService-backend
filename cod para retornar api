@@ -1,0 +1,28 @@
+
+
+
+
+
+
+ // const [dados, setDados] = useState([]);
+
+
+useEffect(() => {
+  async function fetchData() {
+    const response = await fetch('http://localhost:4000/trocavencidas');
+    const data = await response.json();
+    setDados(data);
+  }
+  fetchData();
+  //console.log('seus Dados:', teste);
+}, []);
+
+
+
+  {dados.vencidas &&  dados.vencidas.map((item, index) => (
+      <div key={index}>
+    <p>Código do Serviço: {item.cod_servicos {item}</p>
+   
+    {/* adicione os outros dados que desejar */}
+  </div>
+))}

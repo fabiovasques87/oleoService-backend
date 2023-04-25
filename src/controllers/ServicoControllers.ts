@@ -1,6 +1,7 @@
 
 import { Request, Response } from "express";
 import { ServicoService } from "../services/ServicoService";
+import { VeiculoService } from "../services/VeiculoService";
 import { PrismaClient } from "@prisma/client";
 import moment from "moment";
 
@@ -98,3 +99,4 @@ export const updateServico = async (req: Request, res: Response) => {
     res.json({services});
         
 }  
+

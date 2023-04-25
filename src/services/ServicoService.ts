@@ -54,11 +54,13 @@ export const ServicoService = {
 
     findAll: async () => {
         //pega todos os users da tabela usuarios...
-        return await prisma.servicos.findMany({
-            // orderBy:{
-            //     id: 'desc'
-            // }
-        });
+        // return await prisma.servicos.findMany({
+        //     // orderBy:{
+        //     //     id: 'desc'
+        //     // }
+        // });
+
+        return await prisma.servicos.count({});
     },
     findOne: async (cod_servicos: number) => {
         return await prisma.servicos.findFirst({

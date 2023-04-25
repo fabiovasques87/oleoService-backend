@@ -26,7 +26,7 @@ export const one = async (req: Request, res: Response) =>{
 
 export const create = async (req: Request, res: Response) => {
     const {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo,
-        ano_fabricacao_veiculo, km_veiculo, obs_veiculo, status_veiculo, cliente_codcliente} = req.body;
+        ano_fabricacao_veiculo, km_veiculo, obs_veiculo, status_veiculo, clientecodCliente} = req.body;
   
 
     //se tiver todos esses dados....
@@ -37,7 +37,7 @@ export const create = async (req: Request, res: Response) => {
 
                 const cadVeiculo = await VeiculoService.create({
                     placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo,
-                    ano_fabricacao_veiculo, km_veiculo:parseInt(km_veiculo), obs_veiculo, status_veiculo, cliente_codcliente:parseInt(cliente_codcliente)
+                    ano_fabricacao_veiculo, km_veiculo:parseInt(km_veiculo), obs_veiculo, status_veiculo, clientecodCliente: parseInt(clientecodCliente)
                 });
                 
                 res.status(201).json({cadVeiculo});
@@ -57,7 +57,7 @@ export const create = async (req: Request, res: Response) => {
        
     
         const {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo, ano_fabricacao_veiculo,
-             obs_veiculo, status_veiculo, km_veiculo, cliente_codcliente
+             obs_veiculo, status_veiculo, km_veiculo
             } = req.body;
 
 
@@ -74,7 +74,7 @@ export const create = async (req: Request, res: Response) => {
         //se encontrou o registro, realiza a conversao ...
       
         const km = parseInt(km_veiculo);
-        const cod = parseInt(cliente_codcliente); 
+        // const cod = parseInt(cliente_codcliente); 
 
 
         const veiculo = await prisma.veiculo.update({
@@ -82,7 +82,7 @@ export const create = async (req: Request, res: Response) => {
                 cod_veiculo:parseInt(cod_veiculo)
             },
             data: {placa_veiculo, tipo_veiculo, cor_veiculo, modelo_veiculo, fabricante_veiculo, ano_fabricacao_veiculo,
-                 obs_veiculo, status_veiculo, km_veiculo:km, cliente_codcliente:cod}
+                 obs_veiculo, status_veiculo, km_veiculo:km}
               
             
         })
@@ -126,3 +126,6 @@ export const create = async (req: Request, res: Response) => {
         //         res.json({error: "Registro não encontrado"});              
         //  }
     }
+
+
+    
