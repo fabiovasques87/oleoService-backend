@@ -44,9 +44,7 @@ export const servicoPrestadoVeiculo = async (req:Request, res: Response) => {
 
         // })
 
-        interface Row {
-            servicos: string
-          }
+    
 
           const result = await prisma.$queryRaw<number>`
                select 
@@ -118,21 +116,27 @@ export const servicoPrestadoVeiculo = async (req:Request, res: Response) => {
 
    export const trocaporCpf = async (req: Request, res: Response) => {
 
-        const {cpf_cliente} = req.params;
+//         // const cpf_cliente = req.params.cpf_cliente;
+        const cpf_cliente =req.params[0]; //pega tudo que vem do parametro
+        console.log(`CPF/ CNPJ do cliente: ${cpf_cliente}`);
+        
+//         
 
-        const cpfTroca = await prisma.cliente.findMany({
-            where: {
-                cpf_cliente
-            },
-            include:{
-                servicos: true,
-                veiculo: true,
-            }
-        })
+const cpfTroca = await prisma.$queryRaw<number>`
 
-        res.json({cpfTroca});
-      
-   }
+
+
+SELECT c.nome_cliente, c.sobrenome_cliente, v.placa_veiculo, v.tipo_veiculo, v.fabricante_veiculo , v.modelo_veiculo
+  FROM cliente AS c 
+  INNER JOIN veiculo AS v ON c.codcliente = v.clientecodCliente 
+  WHERE c.cpf_cliente = ${cpf_cliente}
+
+    `
+const resultado = JSONbig.stringify(cpfTroca);
+
+    res.json({resultado});
+
+ }
 
    export const relatTroca = async (req: Request, res: Response)  => {
 

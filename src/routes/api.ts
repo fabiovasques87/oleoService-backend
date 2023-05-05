@@ -51,7 +51,7 @@ router.get('/clientes',ClienteController.one );
 //alterar cliente pelo cpf
 
 router.delete('/deleteCliente/:codcliente', ClienteController.deleteCliente);
-//alterar cliente pelo cpf
+//deleta cliente pelo cpf
 
 
 router.post('/AddServico', ServicoController.create);
@@ -69,8 +69,8 @@ router.get('/servicoTrocaVencendo/:placa_veiculo',Servicos.servicoPrestadoVeicul
 router.get('/trocaAVencer',Servicos.trocaAVencer);
 //rotas para pegar somente as trocas que estao faltando 30 dias para o vencimento...
 
-router.get('/trocaCpf/:cpf_cliente',Servicos.trocaporCpf);
-//rotas para pesquisar trocas por cpf...
+router.get('/trocaCpf/*',Servicos.trocaporCpf);
+//rotas para pesquisar trocas por cpf e cnpj, o * serve para pegar tudo o que vem do parametro...
 
 
 router.get('/trocavencidas',Servicos.trocasVencidas);
