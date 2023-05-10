@@ -63,7 +63,7 @@ router.get('/searchServicos',ServicoController.all );
 router.get('/servico/:cod_servicos',ServicoController.one );
 //rotas para pegar servicos pelo codigo
 
-router.get('/servicoTrocaVencendo/:placa_veiculo',Servicos.servicoPrestadoVeiculo);
+router.get('/servicoTrocaVencendo/:cod_veiculo',Servicos.servicoPrestadoVeiculo);
 //rotas para pegar os veiculos com seus servicos prestados
 
 router.get('/trocaAVencer',Servicos.trocaAVencer);

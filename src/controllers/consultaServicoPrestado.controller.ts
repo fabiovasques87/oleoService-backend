@@ -12,25 +12,78 @@ const prisma = new PrismaClient();
 
 
 
-export const servicoPrestadoVeiculo = async (req:Request, res: Response) => {
-    const {placa_veiculo}= req.params;
+// export const servicoPrestadoVeiculo = async (req:Request, res: Response) => {
+//     const cod_veiculo= req.query;
    
-       const trocaOleo = await prisma.veiculo.findMany({
-           
-           where:{
-               placa_veiculo
-            },
-           
-           include: {
-               
-               cliente: true,
-               servicos:true,
-           },                
-   });
 
-       res.json({trocaOleo})
+
+
+//         const trocaOleo = await prisma.veiculo.findMany({
+            
+//             where:{
+//                     placa_veiculo
+//                 },
+            
+//             include: {
+                
+//                 cliente: true,
+//                 servicos:true,
+//             },  
+                        
+//     });
    
-   }
+//        res.json({trocaOleo})
+   
+
+// }
+
+// export const servicoPrestadoVeiculo = async (req: Request, res: Response) => {
+//     const cod_veiculo = Number(req.params.cod_veiculo);
+  
+//     if (isNaN(cod_veiculo)) {
+//       res.status(400).json({ error: 'O parâmetro cod_veiculo é inválido' });
+//       return;
+//     }
+    
+//     const trocaOleo = await prisma.veiculo.findMany({
+//       where: {
+//         cod_veiculo,
+//       },
+//       include: {
+//         cliente: true,
+//         servicos: true,
+//       },
+//     });
+  
+//     res.json({ trocaOleo });
+//   };
+
+export const servicoPrestadoVeiculo = async (req: Request, res:Response) => {
+  const cod_veiculo = Number(req.params.cod_veiculo);
+
+  const result = await prisma.$queryRaw<number>`
+
+select 
+								c.nome_cliente,c.sobrenome_cliente,cod_veiculo, v.placa_veiculo,v.modelo_veiculo,
+								s.filtro_combustivel,s.filtro_cabine,s.obs_troca,s.filtro_ar,tipo_veiculo,fabricante_veiculo,
+								s.filtro_oleo,data_troca,proxima_troca,
+								s.tipo_oleo,s.status_filtro_combustivel,
+								s.status_filtro_cabine,s.status_filtro_ar,
+								s.status_filtro_oleo,s.km,s.qtd_oleo
+								FROM servicos s
+								INNER JOIN cliente c on s.cliente_codcliente = c.codcliente
+								INNER JOIn veiculo v on s.veiculo_cod_veiculo = cod_veiculo
+								WHERE cod_veiculo = ${cod_veiculo}
+
+  
+
+  `
+
+const resultado = JSONbig.stringify(result);
+res.json({resultado});
+
+}
+  
 
    export const trocaAVencer = async (req: Request, res: Response) => {
 
@@ -126,7 +179,8 @@ const cpfTroca = await prisma.$queryRaw<number>`
 
 
 
-SELECT c.nome_cliente, c.sobrenome_cliente, v.placa_veiculo, v.tipo_veiculo, v.fabricante_veiculo , v.modelo_veiculo
+SELECT c.nome_cliente, c.sobrenome_cliente, v.placa_veiculo, v.tipo_veiculo, v.fabricante_veiculo ,
+ v.modelo_veiculo, c.codcliente,v.cod_veiculo, v.modelo_veiculo, v.cod_veiculo
   FROM cliente AS c 
   INNER JOIN veiculo AS v ON c.codcliente = v.clientecodCliente 
   WHERE c.cpf_cliente = ${cpf_cliente}
