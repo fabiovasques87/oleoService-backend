@@ -73,7 +73,7 @@ select
 								FROM servicos s
 								INNER JOIN cliente c on s.cliente_codcliente = c.codcliente
 								INNER JOIn veiculo v on s.veiculo_cod_veiculo = cod_veiculo
-								WHERE placa_veiculo = ${placa_veiculo}
+								WHERE placa_veiculo = ${placa_veiculo}   order BY proxima_troca desc 
 
   
 
@@ -110,6 +110,29 @@ res.json({resultado});
 
 }
 
+
+export const clientVeiculoCpf = async (req: Request, res:Response) => {
+  const cpf = req.params[0];
+
+  const result = await prisma.$queryRaw<number>`
+
+                
+
+        select   
+                c.nome_cliente,c.sobrenome_cliente,c.codcliente,c.cpf_cliente, 
+ 								v.tipo_veiculo, v.fabricante_veiculo, cod_veiculo,v.modelo_veiculo,
+ 								v.placa_veiculo,v.status_veiculo,v.obs_veiculo,v.clientecodCliente
+ 								FROM cliente AS c
+								JOIN veiculo AS v ON c.codcliente = v.clientecodCliente
+				WHERE c.cpf_cliente = ${cpf}
+        
+
+  `
+
+const resultado = JSONbig.stringify(result);
+res.json({resultado});
+
+}
 
    export const trocaAVencer = async (req: Request, res: Response) => {
 
@@ -197,7 +220,6 @@ res.json({resultado});
 
 //         // const cpf_cliente = req.params.cpf_cliente;
         const cpf_cliente =req.params[0]; //pega tudo que vem do parametro
-        console.log(`CPF/ CNPJ do cliente: ${cpf_cliente}`);
         
 //         
 

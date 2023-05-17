@@ -66,8 +66,12 @@ router.get('/servico/:cod_servicos',ServicoController.one );
 router.get('/servicoTrocaVencendo/:placa_veiculo',Servicos.servicoPrestadoVeiculo);
 //rotas para pegar os veiculos com seus servicos prestados
 
+//pega o registros dos veiculos com seus respectivos proprietários por cpf
+router.get('/clientVeiculoCpf/*' ,Servicos.clientVeiculoCpf)
+
 //pega o ultimo históico do veiculo
 router.get('/clientVeiculo/:placa_veiculo', Servicos.clientVeiculo);
+
 
 router.get('/trocaAVencer',Servicos.trocaAVencer);
 //rotas para pegar somente as trocas que estao faltando 30 dias para o vencimento...
