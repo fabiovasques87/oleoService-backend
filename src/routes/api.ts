@@ -1,6 +1,7 @@
 
 import {Router} from 'express';
 
+
 import * as UserController from '../controllers/userController';
 import * as FuncaoController from '../controllers/funcaoController';
 import * as UnidadeController from '../controllers/unidadeController';
@@ -88,5 +89,8 @@ router.get('/relatData',Servicos.relatTroca);
 
 router.put('/updateServico/:cod_servicos', ServicoController.updateServico);
 //alterar o servico pelo cod
+
+router.put('/updateVeiculoClient/:cod_veiculo', Servicos.updateVeiculoClient);
+//altera o proprietario do veiculo pelo cpf
 
 export default router;
